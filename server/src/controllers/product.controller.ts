@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import productService from "../services/product.service.js";
+import { createProductSchema } from "../validations/product.validation.js";
 
 class ProductController {
   async getAllProducts(req: Request, res: Response) {
@@ -16,6 +17,60 @@ class ProductController {
       return res.status(500).json({
         success: false,
         message: "Internal Server Error",
+      });
+    }
+  }
+
+  async getProductById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const product = await productService.getProductById(id);
+
+      return res.status(200).json({
+        success: true,
+        data: product,
+      });
+
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
+  }
+
+  async createProduct(req: Request, res: Response) {
+    try {
+      const validatedData = createProductSchema.parse(req.body);
+
+      const product = await productService.createProduct(validatedData);
+
+      return res.status(201).json({
+        success: true,
+        message: "Product created successfully",
+        data: product,
+      });
+
+    } catch (error: any) {
+
+      if (error.name === "ZodError") {
+        return res.status(400).json({
+          success: false,
+          errors: error.errors,
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: error.message,
       });
     }
   }

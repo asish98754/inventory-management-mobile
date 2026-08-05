@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../config/prisma.js";
 
 export class ProductRepository {
@@ -6,6 +7,28 @@ export class ProductRepository {
       orderBy: {
         createdAt: "desc",
       },
+    });
+  }
+
+  async findById(id: string) {
+    return prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findByReference(reference: string) {
+    return prisma.product.findUnique({
+      where: {
+        reference,
+      },
+    });
+  }
+
+  async create(data: Prisma.ProductCreateInput) {
+    return prisma.product.create({
+      data,
     });
   }
 }
