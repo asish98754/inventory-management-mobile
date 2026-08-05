@@ -25,5 +25,12 @@ export const createProductSchema = z.object({
 
 export const updateProductSchema = createProductSchema;
 
+export const updateStockSchema = z.object({
+  type: z.enum(["IN", "OUT"]),
+
+  quantity: z.number().int().positive(),
+});
+
 export type CreateProductDTO = z.infer<typeof createProductSchema>;
 export type UpdateProductDTO = z.infer<typeof updateProductSchema>;
+export type UpdateStockDTO = z.infer<typeof updateStockSchema>;

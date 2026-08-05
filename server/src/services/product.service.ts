@@ -2,7 +2,9 @@ import productRepository from "../repositories/product.repository.js";
 import type {
   CreateProductDTO,
   UpdateProductDTO,
+  UpdateStockDTO,
 } from "../validations/product.validation.js";
+import { StockMovementType } from "@prisma/client";
 
 export class ProductService {
   async getAllProducts() {
@@ -50,6 +52,41 @@ export class ProductService {
     }
 
     return productRepository.update(id, data);
+  }
+
+  async updateProductStock(
+    id: string,
+    data: UpdateStockDTO
+  ) {
+    const product = await productRepository.findById(id);
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    let newQuantity = product.quantity;
+
+    if (data.type === "IN") {
+      newQuantity += data.quantity;
+    }
+
+    if (data.type === "OUT") {
+      if (product.quantity < data.quantity) {
+        throw new Error("Insufficient stock");
+      }
+
+      newQuantity -= data.quantity;
+    }
+
+    await productRepository.updateStock(id, newQuantity);
+
+    await productRepository.createStockMovement(
+      id,
+      data.type as StockMovementType,
+      data.quantity
+    );
+
+    return productRepository.findById(id);
   }
 }
 

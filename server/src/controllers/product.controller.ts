@@ -3,6 +3,7 @@ import productService from "../services/product.service.js";
 import {
   createProductSchema,
   updateProductSchema,
+  updateStockSchema,
 } from "../validations/product.validation.js";
 
 class ProductController {
@@ -96,6 +97,38 @@ class ProductController {
       return res.status(500).json({
         success: false,
         error,
+        message: error.message,
+      });
+    }
+  }
+
+  async updateProductStock(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const validatedData = updateStockSchema.parse(req.body);
+
+      const product = await productService.updateProductStock(
+        id,
+        validatedData
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Stock updated successfully",
+        data: product,
+      });
+
+    } catch (error: any) {
+      if (error.name === "ZodError") {
+        return res.status(400).json({
+          success: false,
+          errors: error.errors,
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
         message: error.message,
       });
     }

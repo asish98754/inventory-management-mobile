@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, StockMovementType } from "@prisma/client";
 import prisma from "../config/prisma.js";
 
 export class ProductRepository {
@@ -38,6 +38,31 @@ export class ProductRepository {
         id,
       },
       data,
+    });
+  }
+
+  async updateStock(id: string, quantity: number) {
+    return prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        quantity,
+      },
+    });
+  }
+
+  async createStockMovement(
+    productId: string,
+    type: StockMovementType,
+    quantity: number
+  ) {
+    return prisma.stockMovement.create({
+      data: {
+        productId,
+        type,
+        quantity,
+      },
     });
   }
 }
