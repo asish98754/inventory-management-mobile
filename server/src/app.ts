@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import routes from "./routes/index.js";
+import productRoutes from "./routes/product.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.get("/", (_, res) => {
   });
 });
 
-app.use("/api", routes);
+app.use("/api/products", productRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 export default app;
