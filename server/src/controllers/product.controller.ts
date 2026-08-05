@@ -27,7 +27,7 @@ class ProductController {
 
   async getProductById(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = typeof req.params.id === "string" ? req.params.id : "";
 
       const product = await productService.getProductById(id);
 
@@ -76,7 +76,7 @@ class ProductController {
 
   async updateProduct(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = typeof req.params.id === "string" ? req.params.id : "";
 
       const validatedData = updateProductSchema.parse(req.body);
 
@@ -104,7 +104,7 @@ class ProductController {
 
   async updateProductStock(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = typeof req.params.id === "string" ? req.params.id : "";
 
       const validatedData = updateStockSchema.parse(req.body);
 
@@ -136,7 +136,7 @@ class ProductController {
 
   async deleteProduct(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = typeof req.params.id === "string" ? req.params.id : "";
 
       await productService.deleteProduct(id);
 

@@ -1,0 +1,8 @@
+export const PRODUCT_CATEGORIES = [
+  "FRESH_FRUITS",
+  "CITRUS",
+  "BERRIES",
+  "TROPICAL_FRUITS",
+  "STONE_FRUITS",
+  "MELONS",
+] as const;

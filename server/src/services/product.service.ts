@@ -30,7 +30,10 @@ export class ProductService {
       throw new Error("Reference already exists");
     }
 
-    return productRepository.create(data);
+    return productRepository.create({
+      ...data,
+      image: data.image ?? null,
+    });
   }
 
   async updateProduct(id: string, data: UpdateProductDTO) {
@@ -51,7 +54,10 @@ export class ProductService {
       throw new Error("Reference already exists");
     }
 
-    return productRepository.update(id, data);
+    return productRepository.update(id, {
+      ...data,
+      image: data.image ?? null,
+    });
   }
 
   async updateProductStock(
