@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StockMovementType {
+  IN
+  OUT
+}
+
+enum ProductCategory {
+  FRESH_FRUITS
+  CITRUS
+  BERRIES
+  TROPICAL_FRUITS
+  STONE_FRUITS
+  MELONS
+}
+
+model Product {
+  id              String   @id @default(uuid())
+  name            String
+  reference       String   @unique
+  description     String
+  category        ProductCategory
+  quantity        Int
+  alertThreshold  Int
+  image           String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  stockMovements  StockMovement[]
+}
+
+model StockMovement {
+  id         String            @id @default(uuid())
+
+  productId  String
+  product    Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  type       StockMovementType
+
+  quantity   Int
+
+  createdAt  DateTime @default(now())
+}
