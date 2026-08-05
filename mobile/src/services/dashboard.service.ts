@@ -1,7 +1,10 @@
 import { api } from "./api";
+import { DashboardStatistics } from "../types/dashboard";
 
 export const DashboardService = {
-  getStatistics() {
-    return api.get("/dashboard");
+  async getStatistics(): Promise<DashboardStatistics> {
+    const response = await api.get("/dashboard");
+
+    return response.data.data;
   },
 };
