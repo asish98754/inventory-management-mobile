@@ -88,6 +88,16 @@ export class ProductService {
 
     return productRepository.findById(id);
   }
-}
+  async deleteProduct(id: string) {
+    const product = await productRepository.findById(id);
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    await productRepository.delete(id);
+
+    return;
+  }}
 
 export default new ProductService();

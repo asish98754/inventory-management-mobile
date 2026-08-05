@@ -65,6 +65,14 @@ export class ProductRepository {
       },
     });
   }
+
+  async delete(id: string) {
+    return prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
 
 export default new ProductRepository();
