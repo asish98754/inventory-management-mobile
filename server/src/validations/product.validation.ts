@@ -23,4 +23,7 @@ export const createProductSchema = z.object({
   image: z.string().optional(),
 });
 
+export const updateProductSchema = createProductSchema;
+
 export type CreateProductDTO = z.infer<typeof createProductSchema>;
+export type UpdateProductDTO = z.infer<typeof updateProductSchema>;

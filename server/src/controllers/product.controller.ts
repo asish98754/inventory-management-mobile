@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 import productService from "../services/product.service.js";
-import { createProductSchema } from "../validations/product.validation.js";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../validations/product.validation.js";
 
 class ProductController {
   async getAllProducts(req: Request, res: Response) {
@@ -55,21 +58,44 @@ class ProductController {
 
       return res.status(201).json({
         success: true,
-        message: "Product created successfully",
+        message: "Product has beencreated successfully.",
         data: product,
       });
 
     } catch (error: any) {
+      console.log(error);
 
-      if (error.name === "ZodError") {
-        return res.status(400).json({
-          success: false,
-          errors: error.errors,
-        });
-      }
-
-      return res.status(400).json({
+      return res.status(500).json({
         success: false,
+        error,
+        message: error.message,
+      });
+    }
+  }
+
+  async updateProduct(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const validatedData = updateProductSchema.parse(req.body);
+
+      const product = await productService.updateProduct(
+        id,
+        validatedData
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Product has been updated successfully here.",
+        data: product,
+      });
+
+    } catch (error: any) {
+      console.log(error);
+
+      return res.status(500).json({
+        success: false,
+        error,
         message: error.message,
       });
     }

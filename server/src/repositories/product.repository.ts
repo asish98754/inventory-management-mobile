@@ -31,6 +31,15 @@ export class ProductRepository {
       data,
     });
   }
+
+  async update(id: string, data: Prisma.ProductUpdateInput) {
+    return prisma.product.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
 }
 
 export default new ProductRepository();
