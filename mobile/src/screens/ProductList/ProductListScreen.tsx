@@ -66,19 +66,20 @@ export default function ProductListScreen() {
     return <Loading />;
   }
 
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products
+    .filter((product) => {
+      const matchesSearch =
+        product.name
+          .toLowerCase()
+          .includes(search.toLowerCase());
 
-    const matchesSearch =
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      const matchesCategory =
+        category === "ALL" ||
+        product.category === category;
 
-    const matchesCategory =
-      category === "ALL" ||
-      product.category === category;
-
-    return matchesSearch && matchesCategory;
-  });
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -205,6 +206,6 @@ const styles = StyleSheet.create({
     paddingBottom: 36,
   },
   footerSpacer: {
-    height: 40,
+    height: 20,
   },
 });

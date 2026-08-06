@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
     "@hookform/resolvers": "^5.7.1",
     "@react-native-picker/picker": "2.11.1",
     "@react-navigation/native": "^7.3.14",

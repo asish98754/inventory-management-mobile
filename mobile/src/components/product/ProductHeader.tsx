@@ -41,16 +41,15 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 180,
     height: 180,
-    borderRadius: 90,
-    backgroundColor: "#F5F5F5",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
   },
 
   image: {
-    width: 150,
-    height: 150,
+    width: 180,
+    height: 180,
+    borderRadius: 16,
   },
 
   name: {

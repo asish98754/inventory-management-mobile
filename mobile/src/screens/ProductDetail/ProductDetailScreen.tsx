@@ -1,9 +1,8 @@
-import { Alert, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import ProductHeader from "../../components/product/ProductHeader";
-import ProductInfoCard from "../../components/product/ProductInfoCard";
 import ProductStatusBadge from "../../components/product/ProductStatusBadge";
 import Button from "../../components/ui/Button";
 import Loading from "../../components/ui/Loading";
@@ -85,59 +84,70 @@ export default function ProductDetailScreen() {
           category={product.category}
         />
 
-      <ProductStatusBadge
-        quantity={product.quantity}
-        alertThreshold={product.alertThreshold}
-      />
+      <View style={styles.statusActionsRow}>
+        <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
+          <Text style={styles.iconText}>✏️</Text>
+        </TouchableOpacity>
 
-      <ProductInfoCard
-        label="Quantity"
-        value={`${product.quantity}`}
-      />
+        <View style={styles.statusCenter}>
+          <ProductStatusBadge
+            quantity={product.quantity}
+            alertThreshold={product.alertThreshold}
+          />
+        </View>
 
-      <ProductInfoCard
-        label="Alert Threshold"
-        value={`${product.alertThreshold}`}
-      />
+        <TouchableOpacity onPress={handleDelete} style={[styles.iconButton, styles.deleteIconButton]}>
+          <Text style={styles.iconText}>🗑</Text>
+        </TouchableOpacity>
+      </View>
 
-      <ProductInfoCard
-        label="Reference"
-        value={product.reference}
-      />
+      <View style={styles.infoBox}>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Quantity</Text>
+          <Text style={styles.infoValue}>{product.quantity}</Text>
+        </View>
 
-      <ProductInfoCard
-        label="Description"
-        value={product.description}
-      />
+        <View style={styles.separator} />
 
-      <ProductInfoCard
-        label="Last Updated"
-        value={new Date(product.updatedAt).toLocaleDateString()}
-      />
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Alert Threshold</Text>
+          <Text style={styles.infoValue}>{product.alertThreshold}</Text>
+        </View>
 
-      <View style={styles.buttonRow}>
+        <View style={styles.separator} />
+
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Reference</Text>
+          <Text style={styles.infoValue}>{product.reference}</Text>
+        </View>
+
+        <View style={styles.separator} />
+
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Description</Text>
+          <Text style={styles.infoValue}>{product.description}</Text>
+        </View>
+
+        <View style={styles.separator} />
+
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Last Updated</Text>
+          <Text style={styles.infoValue}>{new Date(product.updatedAt).toLocaleDateString()}</Text>
+        </View>
+      </View>
+
+      <View style={styles.circleButtonRow}>
         <Button
           title="Stock In"
           onPress={handleStockIn}
-          style={[styles.button, styles.greenButton]}
+          style={[styles.circleButton, styles.greenButton]}
+          textStyle={styles.circleButtonText}
         />
         <Button
           title="Stock Out"
           onPress={handleStockOut}
-          style={[styles.button, styles.orangeButton]}
-        />
-      </View>
-
-      <View style={styles.buttonRow}>
-        <Button
-          title="Edit"
-          onPress={handleEdit}
-          style={[styles.button, styles.blueButton]}
-        />
-        <Button
-          title="Delete"
-          onPress={handleDelete}
-          style={[styles.button, styles.redButton]}
+          style={[styles.circleButton, styles.orangeButton]}
+          textStyle={styles.circleButtonText}
         />
       </View>
 
@@ -156,14 +166,81 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 24,
   },
-  buttonRow: {
+  infoBox: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+    elevation: 2,
+  },
+  infoRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 16,
+    alignItems: "center",
+    paddingVertical: 10,
   },
-  button: {
-    flex: 1,
+  infoLabel: {
+    fontSize: 15,
+    color: "#757575",
+    fontWeight: "600",
+  },
+  infoValue: {
+    fontSize: 15,
+    color: "#212121",
+    maxWidth: "60%",
+    textAlign: "right",
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#F0F0F0",
+  },
+  statusActionsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  circleButtonRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  circleButton: {
+    width: 30,
+    height: 60,
+    borderRadius: 65,
     marginHorizontal: 4,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  circleButtonText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+  statusCenter: {
+    flex: 1,
+    alignItems: "center",
+  },
+  iconButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+    marginHorizontal: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F5F5F5",
+  },
+  deleteIconButton: {
+    backgroundColor: "#FFEDED",
+  },
+  iconText: {
+    fontSize: 24,
+  },
+  iconLabel: {
+    marginTop: 4,
+    fontSize: 10,
+    color: "#333",
+    fontWeight: "600",
   },
   greenButton: {
     backgroundColor: "#4CAF50",
@@ -178,6 +255,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F44336",
   },
   footerSpacer: {
-    height: 40,
+    height: 20,
   },
 });
