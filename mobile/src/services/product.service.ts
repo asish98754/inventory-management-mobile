@@ -1,27 +1,36 @@
 import { api } from "./api";
+import { Product } from "../types/product";
 
 export const ProductService = {
-  getAllProducts() {
-    return api.get("/products");
+  async getAllProducts(): Promise<Product[]> {
+    const response = await api.get("/products");
+    return response.data.data;
   },
 
-  getProduct(id: string) {
-    return api.get(`/products/${id}`);
+  async getProduct(id: string): Promise<Product> {
+    const response = await api.get(`/products/${id}`);
+    return response.data.data;
   },
 
-  createProduct(data: any) {
+  async createProduct(data: Partial<Product>) {
     return api.post("/products", data);
   },
 
-  updateProduct(id: string, data: any) {
+  async updateProduct(id: string, data: Partial<Product>) {
     return api.put(`/products/${id}`, data);
   },
 
-  deleteProduct(id: string) {
+  async deleteProduct(id: string) {
     return api.delete(`/products/${id}`);
   },
 
-  updateStock(id: string, data: any) {
+  async updateStock(
+    id: string,
+    data: {
+      type: "IN" | "OUT";
+      quantity: number;
+    }
+  ) {
     return api.patch(`/products/${id}/stock`, data);
   },
 };
