@@ -23,10 +23,16 @@ export default function StockUpdateScreen() {
 
   const [quantity, setQuantity] = useState("");
 
+  function handleQuantityChange(text: string) {
+    if (/^\d*$/.test(text)) {
+      setQuantity(text);
+    }
+  }
+
   async function updateStock() {
     const qty = Number(quantity);
 
-    if (!qty || qty <= 0) {
+    if (!quantity || !/^\d+$/.test(quantity) || !Number.isInteger(qty) || qty <= 0) {
       Alert.alert(
         "Validation",
         "Please enter a valid quantity."
@@ -74,7 +80,7 @@ export default function StockUpdateScreen() {
         keyboardType="numeric"
         placeholder="Enter quantity"
         value={quantity}
-        onChangeText={setQuantity}
+        onChangeText={handleQuantityChange}
       />
 
       <Button

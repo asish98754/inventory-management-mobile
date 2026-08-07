@@ -5,8 +5,6 @@ import {
   StyleSheet,
   TextInput,
   RefreshControl,
-  TouchableOpacity,
-  Text,
 } from "react-native";
 
 import {
@@ -94,14 +92,12 @@ export default function ProductListScreen() {
           onChangeText={setSearch}
         />
 
-        <TouchableOpacity
-          style={styles.addButton}
+        <FloatingButton
           onPress={() =>
             navigation.navigate("ProductForm")
           }
-        >
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
+          style={styles.fab}
+        />
       </View>
 
       <Picker
@@ -181,20 +177,8 @@ const styles = StyleSheet.create({
     padding: 12,
   },
 
-  addButton: {
+  fab: {
     marginLeft: 12,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#ff9800",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  addButtonText: {
-    color: "white",
-    fontSize: 28,
-    fontWeight: "bold",
   },
 
   picker: {

@@ -37,3 +37,32 @@ export const productImages: Record<string, any> = {
 
   default: defaultImage,
 };
+
+export function getProductImageKey(value?: string | null): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const normalized = value.toString().trim().toLowerCase();
+
+  if (productImages[normalized]) {
+    return normalized;
+  }
+
+  const aliases: Array<[string, string]> = [
+    ["apple", "apple.jpg"],
+    ["banana", "banana.jpg"],
+    ["orange", "orange.jpg"],
+    ["grape", "grapes.jpg"],
+    ["grapes", "grapes.jpg"],
+    ["kiwi", "kiwi.jpg"],
+    ["mango", "mango.jpg"],
+    ["pear", "pear.jpg"],
+    ["pineapple", "pineapple.jpg"],
+    ["watermelon", "watermelon.jpg"],
+    ["peach", "peach.jpg"],
+    ["strawberry", "strawberry.jpg"],
+  ];
+
+  return aliases.find(([name]) => normalized.includes(name))?.[1];
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   ScrollView,
   View,
@@ -17,7 +17,7 @@ import { DashboardService } from "../../services/dashboard.service";
 
 import { DashboardStatistics } from "../../types/dashboard";
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 export default function DashboardScreen() {
   const navigation = useNavigation<any>();
@@ -39,14 +39,15 @@ export default function DashboardScreen() {
       setStatistics(data);
     } finally {
       setLoading(false);
-
       setRefreshing(false);
     }
   }
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadDashboard();
+    }, [])
+  );
 
   if (loading || !statistics) {
     return <Loading />;
@@ -99,6 +100,7 @@ export default function DashboardScreen() {
         onPress={() =>
           navigation.navigate("ProductList")
         }
+        color="#FF9800"
       />
     </ScrollView>
   );

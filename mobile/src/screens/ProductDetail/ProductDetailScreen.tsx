@@ -15,7 +15,7 @@ import ProductStatusBadge from "../../components/product/ProductStatusBadge";
 import Button from "../../components/ui/Button";
 import Loading from "../../components/ui/Loading";
 import { ProductService } from "../../services/product.service";
-import { productImages } from "../../utils/productImages";
+import { getProductImageKey, productImages } from "../../utils/productImages";
 
 export default function ProductDetailScreen() {
   const navigation = useNavigation<any>();
@@ -52,7 +52,7 @@ export default function ProductDetailScreen() {
     return <Loading />;
   }
 
-  const imageKey = product.image?.toString().toLowerCase();
+  const imageKey = getProductImageKey(product.image ?? product.name);
   const imageSource =
     imageKey && productImages[imageKey]
       ? productImages[imageKey]

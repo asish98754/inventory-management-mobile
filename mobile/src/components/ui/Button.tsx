@@ -10,6 +10,8 @@ interface Props {
   onPress: (event: GestureResponderEvent) => void;
   style?: object;
   textStyle?: object;
+  color?: string;
+  textColor?: string;
 }
 
 export default function Button({
@@ -17,13 +19,25 @@ export default function Button({
   onPress,
   style,
   textStyle,
+  color,
+  textColor,
 }: Props) {
   return (
     <TouchableOpacity
-      style={[styles.button, style]}
+      style={[
+        styles.button,
+        style,
+        color ? { backgroundColor: color } : null,
+      ]}
       onPress={onPress}
     >
-      <Text style={[styles.buttonText, textStyle]}>
+      <Text
+        style={[
+          styles.buttonText,
+          textStyle,
+          textColor ? { color: textColor } : null,
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>
@@ -33,7 +47,7 @@ export default function Button({
 const styles = StyleSheet.create({
   button: {
     alignSelf: "center",
-    backgroundColor: "#ff9800",
+    backgroundColor: "#4CAF50",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 25,
