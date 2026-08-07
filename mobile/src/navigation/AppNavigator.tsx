@@ -5,6 +5,7 @@ import DashboardScreen from "../screens/Dashboard/DashboardScreen";
 import ProductListScreen from "../screens/ProductList/ProductListScreen";
 import ProductDetailScreen from "../screens/ProductDetail/ProductDetailScreen";
 import ProductFormScreen from "../screens/ProductForm/ProductFormScreen";
+import StockUpdateScreen from "../screens/StockUpdate/StockUpdateScreen";
 
 import { RootStackParamList } from "./types";
 
@@ -48,6 +49,14 @@ export default function AppNavigator() {
           component={ProductFormScreen}
           options={{
             title: "Product",
+          }}
+        />
+
+        <Stack.Screen
+          name="StockUpdate"
+          component={StockUpdateScreen}
+          options={{
+            title: "Update Stock",
           }}
         />
       </Stack.Navigator>

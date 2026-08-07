@@ -1,6 +1,14 @@
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { Alert, 
+  SafeAreaView, 
+  ScrollView, 
+  StyleSheet, 
+  Text, 
+  TouchableOpacity, 
+  View 
+} from "react-native";
+
+import { useCallback, useState } from "react";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 
 import ProductHeader from "../../components/product/ProductHeader";
 import ProductStatusBadge from "../../components/product/ProductStatusBadge";
@@ -17,22 +25,24 @@ export default function ProductDetailScreen() {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadProduct() {
-      try {
-        const data = await ProductService.getProduct(productId);
-        setProduct(data);
-      } catch (error) {
-        Alert.alert("Error", "Unable to load product details.");
-      } finally {
-        setLoading(false);
+  useFocusEffect(
+    useCallback(() => {
+      async function loadProduct() {
+        try {
+          const data = await ProductService.getProduct(productId);
+          setProduct(data);
+        } catch (error) {
+          Alert.alert("Error", "Unable to load product details.");
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    if (productId) {
-      loadProduct();
-    }
-  }, [productId]);
+      if (productId) {
+        loadProduct();
+      }
+    }, [productId])
+  );
 
   if (loading) {
     return <Loading />;
@@ -138,14 +148,24 @@ export default function ProductDetailScreen() {
 
       <View style={styles.circleButtonRow}>
         <Button
-          title="Stock In"
-          onPress={handleStockIn}
+          title="Stock In (+)"
+          onPress={() =>
+          navigation.navigate("StockUpdate", {
+          productId: product.id,
+          type: "IN",
+            })
+          }
           style={[styles.circleButton, styles.greenButton]}
           textStyle={styles.circleButtonText}
         />
         <Button
-          title="Stock Out"
-          onPress={handleStockOut}
+          title="Stock Out (-)"
+          onPress={() =>
+          navigation.navigate("StockUpdate", {
+          productId: product.id,
+          type: "OUT",
+           })
+          }
           style={[styles.circleButton, styles.orangeButton]}
           textStyle={styles.circleButtonText}
         />

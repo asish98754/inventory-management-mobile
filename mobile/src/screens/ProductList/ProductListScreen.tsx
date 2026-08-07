@@ -10,11 +10,11 @@ import {
 } from "react-native";
 
 import {
-  useEffect,
+  useCallback,
   useState,
 } from "react";
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 
 import ProductCard from "../../components/cards/ProductCard";
@@ -58,9 +58,11 @@ export default function ProductListScreen() {
     }
   }
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadProducts();
+    }, [])
+  );
 
   if (loading) {
     return <Loading />;

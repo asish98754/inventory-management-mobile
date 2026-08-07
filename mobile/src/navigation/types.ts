@@ -7,4 +7,8 @@ export type RootStackParamList = {
   ProductForm: {
     productId?: string;
   };
+  StockUpdate: {
+    productId: string;
+    type: "IN" | "OUT";
+  };
 };
