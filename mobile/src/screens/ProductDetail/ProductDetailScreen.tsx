@@ -1,11 +1,11 @@
 import { Alert, 
-  SafeAreaView, 
   ScrollView, 
   StyleSheet, 
   Text, 
   TouchableOpacity, 
   View 
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useCallback, useState } from "react";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
@@ -24,6 +24,7 @@ export default function ProductDetailScreen() {
 
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -70,6 +71,28 @@ export default function ProductDetailScreen() {
     navigation.navigate("ProductForm", { productId: product.id });
   }
 
+  async function confirmDelete() {
+    if (!productId) {
+      return;
+    }
+
+    setDeleting(true);
+
+    try {
+      await ProductService.deleteProduct(productId);
+      Alert.alert("Deleted", "Product was deleted successfully.", [
+        {
+          text: "OK",
+          onPress: () => navigation.goBack(),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "Unable to delete product.");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   function handleDelete() {
     Alert.alert(
       "Delete Product",
@@ -79,7 +102,7 @@ export default function ProductDetailScreen() {
         {
           text: "Delete",
           style: "destructive",
-          onPress: () => Alert.alert("Deleted", "Product deletion not implemented."),
+          onPress: confirmDelete,
         },
       ]
     );

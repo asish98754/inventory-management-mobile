@@ -59,12 +59,20 @@ class ProductController {
 
       return res.status(201).json({
         success: true,
-        message: "Product has beencreated successfully.",
+        message: "Product has been created successfully.",
         data: product,
       });
 
     } catch (error: any) {
       console.log(error);
+
+      if (error.name === "ZodError") {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed.",
+          errors: error.errors,
+        });
+      }
 
       return res.status(500).json({
         success: false,
@@ -87,12 +95,20 @@ class ProductController {
 
       return res.status(200).json({
         success: true,
-        message: "Product has been updated successfully here.",
+        message: "Product has been updated successfully.",
         data: product,
       });
 
     } catch (error: any) {
       console.log(error);
+
+      if (error.name === "ZodError") {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed.",
+          errors: error.errors,
+        });
+      }
 
       return res.status(500).json({
         success: false,

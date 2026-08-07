@@ -4,12 +4,12 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
   useNavigation,
@@ -61,6 +61,11 @@ export default function ProductFormScreen() {
   const [loading, setLoading] =
     useState(isEditMode);
 
+  const [formMessage, setFormMessage] = useState("");
+  const [formMessageType, setFormMessageType] = useState<
+    "success" | "error" | "info"
+  >("success");
+
   const {
     control,
     handleSubmit,
@@ -68,6 +73,7 @@ export default function ProductFormScreen() {
     formState: {
       errors,
       isSubmitting,
+      isDirty,
     },
   } = useForm<ProductFormData>({
     resolver: zodResolver(
@@ -138,6 +144,8 @@ export default function ProductFormScreen() {
   async function onSubmit(
     data: ProductFormData
   ) {
+    setFormMessage("");
+
     const image = getProductImageKey(data.name);
     const payload = {
       ...data,
@@ -146,6 +154,12 @@ export default function ProductFormScreen() {
 
     try {
       if (isEditMode) {
+        if (!isDirty) {
+          setFormMessage("No changes to update.");
+          setFormMessageType("info");
+          return;
+        }
+
         await ProductService.updateProduct(
           productId,
           payload
@@ -157,8 +171,7 @@ export default function ProductFormScreen() {
           [
             {
               text: "OK",
-              onPress: () =>
-                navigation.goBack(),
+              onPress: () => navigation.goBack(),
             },
           ]
         );
@@ -182,14 +195,23 @@ export default function ProductFormScreen() {
         ]
       );
     } catch (error: any) {
-      const message =
+      const apiErrors =
+        error?.response?.data?.errors;
+      const errorMessage =
         error?.response?.data?.message ??
         "Unable to save product.";
 
-      Alert.alert(
-        "Error",
-        message
+      const validationMessage = Array.isArray(apiErrors)
+        ? apiErrors
+            .map((entry: any) => entry.message)
+            .filter(Boolean)
+            .join("\n")
+        : null;
+
+      setFormMessage(
+        validationMessage || errorMessage
       );
+      setFormMessageType("error");
     }
   }
 
@@ -397,6 +419,21 @@ export default function ProductFormScreen() {
             )}
           />
         </View>
+
+        {formMessage ? (
+          <Text
+            style={[
+              styles.formMessage,
+              formMessageType === "success"
+                ? styles.successMessage
+                : formMessageType === "error"
+                ? styles.errorMessage
+                : styles.infoMessage,
+            ]}
+          >
+            {formMessage}
+          </Text>
+        ) : null}
       </ScrollView>
     </KeyboardAvoidingView>
     </SafeAreaView>
@@ -452,5 +489,20 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 10,
+  },
+
+  formMessage: {
+    marginTop: 12,
+    textAlign: "center",
+    fontSize: 15,
+  },
+  successMessage: {
+    color: "#4CAF50",
+  },
+  errorMessage: {
+    color: "#F44336",
+  },
+  infoMessage: {
+    color: "#FF9800",
   },
 });
