@@ -98,7 +98,9 @@ export default function DashboardScreen() {
       <Button
         title="View Products"
         onPress={() =>
-          navigation.navigate("ProductList")
+          navigation.navigate("ProductsTab", {
+            screen: "ProductList",
+          })
         }
         color="#FF9800"
       />
