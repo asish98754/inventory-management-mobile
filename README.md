@@ -12,14 +12,30 @@ The app tracks products, stock levels, categories, and dashboard statistics.
 
 ## Screenshots
 
-Use the attached screenshots in this repo or your review document to show these screens:
-- Dashboard view with product counts and category charts
-- Product list with search and category filter
-- Add Product form with validation
-- Product Details screen
-- Update Stock form
+Below are sample app screens included in `mobile/assets/screenshots/`:
 
-> If you want actual image files in the README, add them under `mobile/assets/screenshots/` and update the links.
+**Dashboard**
+
+![Dashboard](mobile/assets/screenshots/1.1.jpeg)
+
+**Product List**
+
+![Product List](mobile/assets/screenshots/1.3.jpeg)
+
+**Add Product**
+
+![Add Product](mobile/assets/screenshots/1.5.jpeg)
+
+**Product Details**
+
+![Product Details](mobile/assets/screenshots/1.7.jpeg)
+
+**Update Stock**
+
+![Update Stock](mobile/assets/screenshots/1.9.jpeg)
+
+More screenshots are available in `mobile/assets/screenshots/`, including validation states and full-form flows for Add Product and Update Stock.
+These images cover the app’s core screens and validation behavior, so reviewers can verify the user experience.
 
 ## Requirements
 
