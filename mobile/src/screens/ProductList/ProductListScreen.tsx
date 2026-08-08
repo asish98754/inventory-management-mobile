@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
   useCallback,
+  useRef,
   useState,
 } from "react";
 
@@ -43,6 +44,7 @@ export default function ProductListScreen() {
 
   const [refreshing, setRefreshing] =
     useState(false);
+  const flatListRef = useRef<FlatList<Product> | null>(null);
 
   async function loadProducts() {
     try {
@@ -59,6 +61,15 @@ export default function ProductListScreen() {
   useFocusEffect(
     useCallback(() => {
       loadProducts();
+    }, [])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      flatListRef.current?.scrollToOffset({
+        offset: 0,
+        animated: false,
+      });
     }, [])
   );
 
@@ -120,6 +131,7 @@ export default function ProductListScreen() {
       </Picker>
 
       <FlatList
+        ref={flatListRef}
         data={filteredProducts}
         keyExtractor={(item) => item.id}
         refreshControl={

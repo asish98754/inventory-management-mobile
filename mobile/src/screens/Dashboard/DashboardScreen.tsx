@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   ScrollView,
   View,
@@ -30,6 +30,7 @@ export default function DashboardScreen() {
 
   const [refreshing, setRefreshing] =
     useState(false);
+  const scrollRef = useRef<ScrollView | null>(null);
 
   async function loadDashboard() {
     try {
@@ -49,12 +50,19 @@ export default function DashboardScreen() {
     }, [])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
+
   if (loading || !statistics) {
     return <Loading />;
   }
 
   return (
     <ScrollView
+      ref={scrollRef}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}

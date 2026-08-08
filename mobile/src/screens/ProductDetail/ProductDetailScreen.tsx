@@ -7,7 +7,7 @@ import { Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 
 import ProductHeader from "../../components/product/ProductHeader";
@@ -25,6 +25,7 @@ export default function ProductDetailScreen() {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const scrollRef = useRef<ScrollView | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -43,6 +44,12 @@ export default function ProductDetailScreen() {
         loadProduct();
       }
     }, [productId])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
   );
 
   if (loading) {
@@ -110,7 +117,10 @@ export default function ProductDetailScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        ref={scrollRef}
+        contentContainerStyle={styles.container}
+      >
         <ProductHeader
           image={imageSource}
           name={product.name}

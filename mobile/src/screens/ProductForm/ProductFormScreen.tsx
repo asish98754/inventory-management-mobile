@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   Alert,
@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
+  useFocusEffect,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
@@ -70,6 +71,15 @@ export default function ProductFormScreen() {
 
   const scrollRef = useRef<ScrollView | null>(null);
 
+  const defaultFormValues: ProductFormData = {
+    name: "",
+    reference: "",
+    description: "",
+    category: "",
+    quantity: 0,
+    alertThreshold: 0,
+  };
+
   const {
     control,
     handleSubmit,
@@ -84,14 +94,7 @@ export default function ProductFormScreen() {
       productSchema
     ),
 
-    defaultValues: {
-      name: "",
-      reference: "",
-      description: "",
-      category: "",
-      quantity: 0,
-      alertThreshold: 0,
-    },
+    defaultValues: defaultFormValues,
   });
 
   useEffect(() => {
@@ -101,6 +104,28 @@ export default function ProductFormScreen() {
 
     loadProduct();
   }, [productId]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      return;
+    }
+
+    const unsubscribe = navigation.addListener(
+      "focus",
+      () => {
+        reset(defaultFormValues);
+        setFormMessage("");
+      }
+    );
+
+    return unsubscribe;
+  }, [isEditMode, navigation, reset]);
+
+  useFocusEffect(
+    useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
 
   function handleNumericInputChange(
     text: string,
@@ -214,7 +239,7 @@ export default function ProductFormScreen() {
           {
             text: "OK",
             onPress: () =>
-              navigation.goBack(),
+              navigation.navigate("ProductsTab" as any),
           },
         ]
       );
