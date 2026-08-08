@@ -94,7 +94,7 @@ export default function ProductListScreen() {
 
         <FloatingButton
           onPress={() =>
-            navigation.navigate("ProductForm")
+            navigation.navigate("AddProductTab")
           }
           style={styles.fab}
         />

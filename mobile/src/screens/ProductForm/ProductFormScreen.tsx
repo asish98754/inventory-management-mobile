@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -65,6 +66,9 @@ export default function ProductFormScreen() {
   const [formMessageType, setFormMessageType] = useState<
     "success" | "error" | "info"
   >("success");
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollRef = useRef<ScrollView | null>(null);
 
   const {
     control,
@@ -138,7 +142,27 @@ export default function ProductFormScreen() {
       navigation.goBack();
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  }
+
+  async function handleRefresh() {
+    setRefreshing(true);
+
+    if (productId) {
+      await loadProduct();
+      return;
+    }
+
+    reset({
+      name: "",
+      reference: "",
+      description: "",
+      category: "",
+      quantity: 0,
+      alertThreshold: 0,
+    });
+    setRefreshing(false);
   }
 
   async function onSubmit(
@@ -223,23 +247,32 @@ export default function ProductFormScreen() {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         style={styles.wrapper}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior="padding"
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 120}
       >
         <ScrollView
-          contentContainerStyle={
-            styles.container
-          }
+          ref={scrollRef}
+          style={styles.scrollView}
+          contentContainerStyle={[
+            styles.container,
+            styles.scrollContent,
+          ]}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           contentInsetAdjustmentBehavior="automatic"
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
+          }
         >
-        <Text style={styles.title}>
-          {isEditMode
-            ? "Edit Product"
-            : "Add Product"}
-        </Text>
+          <Text style={styles.title}>
+            {isEditMode
+              ? "Edit Product"
+              : "Add Product"}
+          </Text>
 
       {/* Name */}
 
@@ -362,6 +395,11 @@ export default function ProductFormScreen() {
             placeholder="0"
             keyboardType="number-pad"
             value={String(value)}
+            onFocus={() =>
+              scrollRef.current?.scrollToEnd({
+                animated: true,
+              })
+            }
             onChangeText={(text) =>
               handleNumericInputChange(
                 text,
@@ -391,6 +429,11 @@ export default function ProductFormScreen() {
             placeholder="e.g. 10"
             keyboardType="number-pad"
             value={String(value)}
+            onFocus={() =>
+              scrollRef.current?.scrollToEnd({
+                animated: true,
+              })
+            }
             onChangeText={(text) =>
               handleNumericInputChange(
                 text,
@@ -448,9 +491,15 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+  },
   container: {
     padding: 20,
     paddingBottom: 40,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
 
   title: {
