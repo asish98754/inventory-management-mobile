@@ -93,6 +93,9 @@ npm install
 
 3. Configure the API base URL in `mobile/src/services/api.ts`.
 
+> Important: this project currently uses a hardcoded backend URL in `mobile/src/services/api.ts`.
+> The mobile app must be able to reach the backend at that URL, otherwise API calls will fail.
+
 If running the backend locally from the same computer, set `baseURL` to your desktop machine IP or `localhost` depending on the device/emulator.
 
 Example:
@@ -102,6 +105,8 @@ export const api = axios.create({
   baseURL: "http://192.168.1.102:5000/api",
 });
 ```
+
+If you are testing on an Android emulator, use `http://10.0.2.2:5000/api` instead of `localhost`.
 
 4. Start the app:
 
