@@ -12,27 +12,15 @@ The app tracks products, stock levels, categories, and dashboard statistics.
 
 ## Screenshots
 
-Below are sample app screens included in `mobile/assets/screenshots/`:
+The main app screens are shown below. Click a thumbnail to view the full-size image.
 
-**Dashboard**
+| Dashboard | Product List | Add Product |
+|---|---|---|
+| <a href="mobile/assets/screenshots/1.1.jpeg"><img src="mobile/assets/screenshots/1.1.jpeg" width="220"></a> | <a href="mobile/assets/screenshots/1.3.jpeg"><img src="mobile/assets/screenshots/1.3.jpeg" width="220"></a> | <a href="mobile/assets/screenshots/1.5.jpeg"><img src="mobile/assets/screenshots/1.5.jpeg" width="220"></a> |
 
-![Dashboard](mobile/assets/screenshots/1.1.jpeg)
-
-**Product List**
-
-![Product List](mobile/assets/screenshots/1.3.jpeg)
-
-**Add Product**
-
-![Add Product](mobile/assets/screenshots/1.5.jpeg)
-
-**Product Details**
-
-![Product Details](mobile/assets/screenshots/1.7.jpeg)
-
-**Update Stock**
-
-![Update Stock](mobile/assets/screenshots/1.9.jpeg)
+| Product Details | Update Stock | Validation |
+|---|---|---|
+| <a href="mobile/assets/screenshots/1.7.jpeg"><img src="mobile/assets/screenshots/1.7.jpeg" width="220"></a> | <a href="mobile/assets/screenshots/1.9.jpeg"><img src="mobile/assets/screenshots/1.9.jpeg" width="220"></a> | <a href="mobile/assets/screenshots/1.6.jpeg"><img src="mobile/assets/screenshots/1.6.jpeg" width="220"></a> |
 
 More screenshots are available in `mobile/assets/screenshots/`, including validation states and full-form flows for Add Product and Update Stock.
 These images cover the app’s core screens and validation behavior, so reviewers can verify the user experience.
