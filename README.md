@@ -48,10 +48,16 @@ npm install
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 ```
 
-4. Apply Prisma migrations to create tables and seed data if necessary:
+4. Apply the existing Prisma migrations to create database tables:
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate deploy
+```
+
+If you are actively developing Prisma schema changes and need a local dev reset, use:
+
+```bash
+npx prisma migrate dev
 ```
 
 5. Generate Prisma client and start the backend:
